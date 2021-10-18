@@ -1,0 +1,135 @@
+#include <iostream>
+#include <string>
+#include <map>
+#include <string.h>
+
+using namespace std;
+
+class Text{
+
+private:
+    string *textarray;
+    string text;
+    int prop;
+    int litera;
+    int vocal;
+    int cons;
+
+public:
+    Text()
+    {
+     prop = 0;
+     litera = 0;
+     vocal = 0;
+     text = " ";
+        cons = 0;
+    }
+
+    int return_prop() { return prop; }
+    int return_vocal() { return vocal; }
+    int return_cons(){ return cons;}
+	int return_litera() { return litera; }
+	string return_text() { return text; }
+
+	Text(const string& text)
+	{
+		this->text = text;
+	}
+
+
+public:
+     int nr_prop(string text)
+	{
+		for (int i = 0; i <= text.length(); i++)
+		{
+
+			if (text[i] == '.' || text[i] == '?' || text[i] == '!')
+			{
+				prop++;
+			}
+		}
+		return prop;
+	}
+
+
+public:
+    int nr_cuvinte(string text)
+	{
+		int count = 1;
+		for (int i = 0; i < text.length() - 1; i++)
+		{
+			if (text[i] == ' ' && text[i + 1] != ' ')
+			{
+				count++;
+			}
+		}
+		return count;
+	}
+
+public:
+     int nr_litere(string text)
+	{
+		for (int i = 0; i< text.length(); i++)
+		{
+			if (isalpha(text[i]))
+			{
+				litera++;
+			}
+		}
+		return litera;
+	}
+
+public:
+     int nr_Vocal(string text)
+	{
+        for(int i = 0; text[i]!='\0'; ++i)
+    {
+        if(text[i]=='a' || text[i]=='e' || text[i]=='i' ||
+           text[i]=='o' || text[i]=='u' || text[i]=='A' ||
+           text[i]=='E' || text[i]=='I' || text[i]=='O' ||
+           text[i]=='U')
+        {
+            ++vocal;
+        }
+    }
+    return vocal;
+	}
+
+public:
+     int nr_Cons(string text)
+	{
+	         for(int i = 0; text[i]!='\0'; ++i)
+    {
+         if(text[i]=='a' || text[i]=='e' || text[i]=='i' ||
+           text[i]=='o' || text[i]=='u' || text[i]=='A' ||
+           text[i]=='E' || text[i]=='I' || text[i]=='O' ||
+           text[i]=='U')
+        {
+            continue;
+        }
+
+        else if((text[i]>='a'&& text[i]<='z') || (text[i]>='A'&& text[i]<='Z'))
+        {
+            ++cons;
+        }
+
+	}
+    return cons;
+	}
+};
+
+
+
+int main()
+{
+    Text text;
+	string str;
+	cout << "Introduceti textul: ";
+	getline(cin, str);
+	cout <<"\nNr. de propozitii:  " << text.nr_prop(str);
+	cout <<"\nNr. de cuvinte:  " << text.nr_cuvinte(str);
+	cout <<"\nLitere:  " << text.nr_litere(str);
+	cout <<"\nConsoane:  " << text.nr_Cons(str);
+	cout <<"\nVocale:  " << text.nr_Vocal(str);
+
+}
