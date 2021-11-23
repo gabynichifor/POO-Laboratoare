@@ -1,0 +1,229 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Data;
+
+
+
+namespace LabPOO4
+{
+    public static class check
+    {
+        public class stack
+        {
+            public int top = -1;
+            public char[] items = new char[100];
+
+            public void push(char x)
+            {
+                if (top == 99)
+                {
+                    Console.WriteLine("Supraincarcare");
+                }
+                else
+                {
+                    items[++top] = x;
+                }
+            }              
+        }
+        public static bool Verificare_Paranteze(char exp1, char exp2)
+        {
+            if (exp1 == '(' && exp2 == ')')
+                return true;
+            else
+                return false;
+        }
+        public static bool areBracketsBalanced(char[] exp)
+        {          
+            Stack<char> st = new Stack<char>();
+       
+            for (int i = 0; i < exp.Length; i++)
+            {
+            
+                if (exp[i] == '(')
+                    st.Push(exp[i]);
+
+              
+                if (exp[i] == ')')
+                {                
+                    if (st.Count == 0)
+                    {
+                        return false;
+                    }
+                    else if (!Verificare_Paranteze(st.Pop(), exp[i]))
+                    {
+                        return false;
+                    }
+                }
+            }
+            if (st.Count == 0)
+                return true;
+            else
+            {
+                return false;
+            }
+        }
+        public class Evaluare_Expresie
+        {
+            public static int evaluate(string expr)
+            {
+                char[] tokens = expr.ToCharArray();
+                Stack<int> values = new Stack<int>();
+                Stack<char> ops = new Stack<char>();
+                for (int i = 0; i < tokens.Length; i++)
+                {
+                    if (tokens[i] == ' ')
+                    {
+                        continue;
+                    }
+                    if (tokens[i] >= '0' && tokens[i] <= '9')
+                    {
+                        StringBuilder sbuf = new StringBuilder();
+                        while (i < tokens.Length &&
+                                tokens[i] >= '0' &&
+                                    tokens[i] <= '9')
+                        {
+                            sbuf.Append(tokens[i++]);
+                        }
+                        values.Push(int.Parse(sbuf.ToString()));
+                        i--;
+                    }
+                    else if (tokens[i] == '(')
+                    {
+                        ops.Push(tokens[i]);
+                    }
+                    else if (tokens[i] == ')')
+                    {
+                        while (ops.Peek() != '(')
+                        {
+                            values.Push(applyOp(ops.Pop(), values.Pop(), values.Pop()));
+                        }
+                        ops.Pop();
+                    }
+
+else if (tokens[i] == '+' ||
+                             tokens[i] == '-' ||
+                             tokens[i] == '*' ||
+                             tokens[i] == '/')
+                    {
+                    
+                        while (ops.Count > 0 &&
+                                 hasPrecedence(tokens[i], ops.Peek()))
+                        {
+                            values.Push(applyOp(ops.Pop(), values.Pop(), values.Pop()));
+                        }                       
+                        ops.Push(tokens[i]);
+                    }
+                }             
+                while (ops.Count > 0)
+                {
+                    values.Push(applyOp(ops.Pop(), values.Pop(), values.Pop()));
+                }            
+                return values.Pop();
+            }
+            public static bool hasPrecedence(char op1, char op2)
+            {
+                if (op2 == '(' || op2 == ')')
+                {
+                    return false;
+                }
+                if ((op1 == '*' || op1 == '/') &&
+                       (op2 == '+' || op2 == '-'))
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            public static int applyOp(char op, int b, int a)
+            {
+                switch (op)
+                {
+                    case '+':
+                        return a + b;
+                    case '-':
+                        return a - b;
+                    case '*':
+                        return a * b;
+                    case '/':
+                        if (b == 0)
+                        {
+                            throw new
+                            NotSupportedException("Error!");
+                        }
+                        return a / b;
+                }
+                return 0;
+            }
+            public static void Main(string[] args)
+            {
+                DataTable dt = new DataTable();
+                string line1 = File.ReadAllText(@"E:\ProblemeC++\POO_004\one_expression.txt");
+                char[] line1_char = line1.ToCharArray();
+                if (areBracketsBalanced(line1_char))
+                {
+                    var c = dt.Compute(line1, " ");
+                    Console.WriteLine("\n\n\t---Laboratorul NR.4---");
+                    Console.WriteLine("\t\tPartea I");
+                    Console.WriteLine("\tRezultatele expresiei I: " + c);
+                }
+                else
+                {
+                    Console.WriteLine("\tError");
+                }
+                Console.WriteLine("--------------------------------------------");
+
+                var list = new List<string[]>();
+                using (StreamReader reader = new StreamReader("E:/ProblemeC++/POO_004/three_expressions.txt"))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        list.Add(line.Split(';'));
+                    }
+                }
+
+                string expresia_1 = list[0][0];
+                string expresia_2 = list[1][0];
+                string thirdExpression = list[2][0];
+
+                char[] firstexpress_char = expresia_1.ToCharArray();
+                char[] secondexpress_char = expresia_2.ToCharArray();
+                char[] thirdexpress_char = thirdExpression.ToCharArray();
+                Console.WriteLine("\t\tPartea II");
+                if (areBracketsBalanced(firstexpress_char))
+                {                  
+                    Console.WriteLine("\tRezultatele expresiei I: " + Evaluare_Expresie.evaluate(expresia_1));
+
+}
+                else
+                {
+                    Console.WriteLine("\tError! Verificati corectitudinea datelor");
+                }                
+                if (areBracketsBalanced(secondexpress_char))
+                {
+                 
+                    Console.WriteLine("\tRezultatele expresiei II:" + Evaluare_Expresie.evaluate(expresia_2));
+                }
+                else
+                {
+                    Console.WriteLine("\tError! Verificati corectitudinea datelor");
+                }         
+                if (areBracketsBalanced(thirdexpress_char))
+                {
+                 
+                    Console.WriteLine("\tRezultatele expresiei III: " + Evaluare_Expresie.evaluate(thirdExpression));
+                }
+                else
+                {
+                    Console.WriteLine("\tError! Verificati corectitudinea datelor");
+                }
+                Console.WriteLine("--------------------------------------------");
+                Console.ReadKey(); 
+            }
+        }
+    }
+}
