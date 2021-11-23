@@ -1,0 +1,173 @@
+#include <iostream>
+using namespace std;
+
+
+class A {
+private:
+    int a;
+public:
+    A(int aa)
+    {
+        a = aa;
+    }
+    int geta() {
+        printf("\n");
+        return a;
+    }
+};
+
+
+class B : public A
+{
+private:
+    int b;
+
+public:
+    B(int bb, int aa) : A(aa)
+    {
+        b = bb;
+    }
+    int getB() {
+        return geta()+b;
+    }
+
+};
+
+class C : public B {
+private:
+    int c;
+public:
+    C(int cc, int bb) : B(bb,cc)
+    {
+        c = cc;
+    }
+    int getC() {
+        return getB()+c;
+    }
+
+};
+
+class D : public C {
+private:
+    int d;
+public:
+    D(int dd, int cc) : C(cc,dd)
+    {
+        d = dd;
+    }
+    int getD() {
+        return getC()+d;
+    }
+
+};
+
+class E : public D {
+private:
+    int e;
+public:
+    E(int ee, int dd) : D(dd,ee)
+    {
+        e = ee;
+    }
+    int getE() {
+        return getD()+e;
+    }
+
+};
+
+class F : public E {
+private:
+    int f;
+public:
+    F(int ff, int ee) : E(ee,ff)
+    {
+        f = ff;
+    }
+    int getF() {
+        return getD()+f;
+    }
+
+};
+
+class G : public F {
+private:
+    int g;
+public:
+    G(int gg, int ff) : F(ff,gg)
+    {
+        g = gg;
+    }
+    int getG() {
+        return getF()+g;
+    }
+
+};
+
+class H : public G {
+private:
+    int h;
+public:
+    H(int hh, int gg) : G(gg,hh)
+    {
+        h = hh;
+    }
+    int getH() {
+        return getF()+h;
+    }
+
+};
+
+class I : public H {
+private:
+    int i;
+public:
+    I(int ii, int hh) : H(hh,ii)
+    {
+        i = ii;
+    }
+    int getI() {
+        return getH()+i;
+    }
+
+};
+
+class J : public I {
+private:
+    int j;
+public:
+    J(int jj, int ii) : I(ii,jj)
+    {
+        j = jj;
+    }
+    int getJ() {
+        return getI()+j;
+    }
+
+};
+
+
+
+
+int main()
+{
+    A a(1);
+    B b(2,1);
+    C c(3, 2);
+    D d(4, 3);
+    E e(5, 4);
+    F f(6, 5);
+    G g(7, 6);
+    H h(8, 7);
+    I i(9, 8);
+    J j(10, 9);
+    std::cout << a.geta();
+    std::cout << b.getB();
+    std::cout << c.getC();
+    std::cout << d.getD();
+    std::cout << e.getE();
+    std::cout << f.getF();
+    std::cout << g.getG();
+    std::cout << i.getI();
+    std::cout << j.getJ();
+
+}
