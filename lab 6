@@ -1,0 +1,228 @@
+#include <iostream>
+#include <cstring>
+#include <fstream>
+#include <cstdlib>
+#include <iomanip>
+#include <conio.h>
+#include <ctime>
+#include <list>
+using namespace std;
+
+struct Data
+{
+	int zi, luna, an;
+}date;
+
+//1
+class Person
+{
+public:
+	string fullName() {
+		return title + givenName + middleName + familyName;
+	}
+protected:
+	string title;
+	string givenName;
+	string middleName;
+	string familyName;
+	Data birthDate;
+	string gender;
+	string phone;
+	string homeAddress;
+	list <string> Staff;
+	list <string> Hospital;
+public: void Citeste() {
+	cout << "\n\t---Introduceti datele---" << endl;
+	cout << "\tTitlul:";
+	cin >> title;
+	cout << "\tNumele:";
+	cin >> givenName;
+	cout << "\tPatronimocul:";
+	cin >> middleName;
+	cout << "\tPrenumele:";
+	cin >> familyName;
+	do //Citim si controlam DATA
+	{
+		cout << "\t Data: ";
+		if ((cin >> date.zi) && (date.zi >= 1) && (date.zi <= 31))
+		{
+			break;
+		}
+		else
+		{
+			cout << "\t Format incorect! Data (1-31)\n";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	} while (true);
+	do //Citim si controlam LUNA
+	{
+		cout << "\t Luna: ";
+		if ((cin >> date.luna) && (date.luna >= 1) && (date.luna <= 12))
+		{
+			break;
+		}
+		else
+		{
+			cout << "\t Format incorect! Luna (1-12)\n";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	} while (true);
+	do //Citim si controlam ANUL
+	{
+		cout << "\t Anul: ";
+		if ((cin >> date.an) && (date.an >= 1900) && (date.an <= 2100))
+		{
+			break;
+		}
+		else
+		{
+			cout << "\t Format incorect! Anul (1900-2100)\n";
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		}
+	} while (true);
+	cout << "\tSexul:";
+	cin >> gender;
+	cout << "\tNumarul de telefon:";
+	cin >> phone;
+	cout << "\tAdresa:";
+	cin >> homeAddress;
+  }
+public: void Afisare() {
+	cout << "\n\t---Afisarea datele---" << endl;
+	cout << "\tPostul:" << title << endl;
+	cout << "\tNumele:" << familyName << endl;
+	cout << "\tPrenumele:" <<givenName << endl;
+	cout << "\tPatronmicul:" << middleName << endl;
+	cout << "\tSexul:" << gender << endl;
+	cout << "\tNr.telefon:" << phone << endl;
+	cout << "\tAdresa:" << homeAddress << endl;
+}
+};
+class Staff : Person {
+protected:
+	string joined;
+	string education[10];
+	string certifications[10];
+	string languages[10];
+
+};
+class Departament {
+protected:
+	list <string> Staff;
+	list <string> Hospital;
+};
+//2
+class Hospital {
+protected:
+	string id;
+	string address;
+	string phone;
+	list <string> Person;
+	list <string> Departament;
+};
+class Patient: Person {
+protected:
+	 string id;
+	 string accepted;
+	 string sickness [10];
+	 string prescriptions[10];
+	 string allergies[10];
+	 string specialReqs[10];
+	 list <string> OperationsStaff;
+};
+//6
+class Doctor  {
+protected:
+    string specialty [10];
+    string locations [10];
+
+};
+//7
+class OptionalStaf : Staff {
+	list <string> Person;
+};
+//8
+class Nurse : OptionalStaf {
+	list <string> POptionalStaf;
+};
+//9
+class Surgeon : Doctor {
+	list <string> Doctor;
+};
+//10
+class AdministrativeStaff: Staff {
+	list <string> Staff;
+};
+//11
+class Front_Desck_Staff: AdministrativeStaff {
+	list <string> AdministrativeStaff;
+};
+//12
+class Receptionist :Front_Desck_Staff {
+	list <string> Front_Desck_Staff;
+};
+//13
+class Tehnical_Staff :Staff  {
+	list <string> Staff;
+};
+//14
+class Tehnician : Tehnical_Staff {
+	list <string> Tehnical_Staff;
+};
+//15
+class Tehnologist :Tehnical_Staff {
+	list <string> Tehnical_Staff;
+};
+//16
+class Surgical_Tehnologist :Tehnologist {
+	list <string> Tehnologist;
+};
+int main(void)
+{
+	Person pers;
+	int n;//numarul de elemente
+
+	char com ;
+	do
+	{
+		cout <<"\n\n\t---------------Menu---------------\n";
+		cout <<"\t\t - 1 Introducere date \n";
+		cout <<"\t\t - 2 Afisare date\n";
+		cout << "\t\t - Pentru a inchide aplicatia tastati 'q'\n";
+		cout << "\n\n\t Introduceti comanda: ";
+		cin >> com;
+		switch (com)
+		{
+		case '1':
+		{
+			cout << "\n\tIntroduceti numarul de elemente:";
+			cin >> n;
+			for (int i = 0; i < n; i++)//ciclu de citire/afisare a nr elemente de le tasta
+			{
+				pers.Citeste();
+				pers.Afisare();
+			}
+			break;
+		}
+		case '2':
+		{
+
+			break;
+		}
+		case 'q':
+		{
+			continue;
+		}
+		default:
+		{
+			cout << "\n\tComanda Inexistenta!";
+			break;
+		}
+		}
+	} while (com != 'q');
+	return  0;
+}
+
