@@ -1,0 +1,163 @@
+cub.java
+
+package javaapplication7;
+
+public class Cub implements GeometricBody {
+    private float length;
+
+    public Cub(float l) {
+        length = l;
+    }
+
+    public float getSuprafata() {
+        return 6 * (length * length);
+    }
+
+    public float getVolum() {
+        return length * length * length;
+    }
+
+}
+
+GeometricBody.java
+
+package javaapplication7;
+
+public interface GeometricBody {
+    float getSuprafata();
+    float getVolum();
+}
+
+GeometricBodyController.java
+
+package javaapplication7;
+
+import java.util.ArrayList;
+
+public class GeometricBodyController {
+    static public GeometricBody getBiggestSurfaceBody(ArrayList<GeometricBody> bodies) {
+        float max = 0;
+        GeometricBody maxBody = null;
+
+        for (GeometricBody i : bodies) {
+            float surf = i.getSuprafata();
+
+            if (surf > max) {
+                max = surf;
+                maxBody = i;
+            }
+        }
+
+        return maxBody;
+    }
+
+    static public GeometricBody getBiggestVolumeBody(ArrayList<GeometricBody> bodies) {
+        float max = 0;
+        GeometricBody maxBody = null;
+
+        for (GeometricBody i : bodies) {
+            float surf = i.getVolum();
+
+            if (surf > max) {
+                max = surf;
+                maxBody = i;
+            }
+        }
+
+        return maxBody;
+    }
+}
+
+
+Main.java
+
+package javaapplication7;
+
+import java.util.ArrayList;
+
+public class Main
+{
+    public static void main(String[] args)
+    {
+
+        GeometricBody cub = new Cub(5);
+        GeometricBody sfera = new Sfera(5);
+        GeometricBody paralilipiped = new Paralilipiped(5, 15, 25);
+
+        ArrayList<GeometricBody> bodies = new ArrayList<GeometricBody>();
+
+        System.out.println("Basic Level:");
+
+        System.out.println("\nCub:");
+        System.out.println("Volum: " + cub.getVolum());
+        System.out.println("Suprafata: " + cub.getSuprafata());
+
+        System.out.println("\nSfera:");
+        System.out.println("Volum: " + sfera.getVolum());
+        System.out.println("Suprafata: " + sfera.getSuprafata());
+
+        System.out.println("\nParalilipiped:");
+        System.out.println("Volum: " + paralilipiped.getVolum());
+        System.out.println("Suprafata: " + paralilipiped.getSuprafata());
+
+
+        bodies.add(cub);
+        bodies.add(sfera);
+        bodies.add(paralilipiped);
+
+        System.out.println("\nAdvanced Level:\n");
+        System.out.println("Cea mai mare suprafata este: " + GeometricBodyController.getBiggestSurfaceBody(bodies).getSuprafata());
+        System.out.println("Cel mai mare volum este: " + GeometricBodyController.getBiggestVolumeBody(bodies).getVolum());
+
+    }
+
+    private static class GeometricBodyController {
+
+        public GeometricBodyController() {
+        }
+    }
+}
+
+
+Paralilipiped.java
+
+package javaapplication7;
+
+public class Paralilipiped implements GeometricBody {
+
+    private float a, b, c;
+
+    public Paralilipiped(float a, float b, float c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+    }
+
+    public float getVolum() {
+        return a * b * c;
+    }
+
+    public float getSuprafata() {
+        return (2 * a * b) + (2 * b * c) + (2 * a * c);
+    }
+}
+
+Sfera.java
+
+package javaapplication7;
+
+public class Sfera implements GeometricBody {
+    private float r;
+
+    public Sfera(float r) {
+        this.r = r;
+    }
+
+    public float getSuprafata() {
+        return (float)Math.PI * (r * r) * 4;
+    }
+
+    public float getVolum() {
+        return (float)Math.PI * (r * r * r) * (4/3);
+    }
+}
